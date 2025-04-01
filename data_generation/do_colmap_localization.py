@@ -15,6 +15,7 @@ import subprocess
 import open3d as o3d
 import argparse
 from hloc.utils.read_write_model import Camera, Image, Point3D, read_model, write_model, rotmat2qvec, qvec2rotmat
+from hloc.utils.read_write_dense import read_array
 import pycolmap
 import matplotlib.pyplot as plt
 from hloc.visualization import plot_images, read_image
@@ -24,6 +25,7 @@ from hloc.localization_colmap import run_command
 from ges_utils import json_to_empty_colmap_model
 from tqdm import tqdm
 import os.path as osp
+import h5py
 
 
 def build_queries_cam(query_images_folder, queries_txt):
@@ -298,6 +300,66 @@ def run_mvs(sparse_sfm, dense_sfm, image_dir, gpu_idx=0):
     run_command(cmd, True)
 
 
+
+def depth_to_h5(depth_map, file_name, depth_h5_dir):
+    h5_path = os.path.join(depth_h5_dir, '%s.h5' % os.path.splitext(file_name)[0])
+
+    with h5py.File(h5_path, "w") as f:
+        dest = f.create_dataset("depth", data=depth_map, compression='gzip', compression_opts=9)
+        dest.attrs["description"] = "Depth map of the image"
+
+
+def postprocess_scene(base_undistorted_sfm_path, scene_id):
+    print('>>> Postprocessing scene:', scene_id)
+
+    undistorted_sparse_path = os.path.join(
+        base_undistorted_sfm_path, scene_id, 'sfm_output_localization', 'sfm_superpoint+superglue', 'localized_dense_metric', 'sparse'
+    )
+    images_path = os.path.join(
+        base_undistorted_sfm_path, scene_id, 'sfm_output_localization', 'sfm_superpoint+superglue', 'localized_dense_metric', 'images'
+    )
+    if not os.path.exists(images_path):
+        raise FileNotFoundError(f"Images path {images_path} does not exist.")
+
+    depths_path = os.path.join(
+        base_undistorted_sfm_path, scene_id, 'sfm_output_localization', 'sfm_superpoint+superglue', 'localized_dense_metric', 'stereo', 'depth_maps'
+    )
+    if not os.path.exists(depths_path):
+        raise FileNotFoundError(f"Depth maps path {depths_path} does not exist.")
+    
+    # Transform the reconstruction to raw text format.
+    sparse_txt_path = os.path.join(base_undistorted_sfm_path, scene_id, 'sfm_output_localization', 'sfm_superpoint+superglue', 'localized_dense_metric', 'sparse-txt')
+    os.makedirs(sparse_txt_path, exist_ok=True)
+
+    cmd = [
+        'colmap', 'model_converter',
+        '--input_path', undistorted_sparse_path,
+        '--output_path', sparse_txt_path, 
+        '--output_type', 'TXT'
+    ]
+    run_command(cmd, True)
+
+    # Output the depth maps as h5 files
+    depths_output = os.path.join(base_undistorted_sfm_path, scene_id, 'sfm_output_localization', 'sfm_superpoint+superglue', 'localized_dense_metric', 'depths')
+    os.makedirs(depths_output, exist_ok=True)
+
+    # For every image, find the corresponding depth map and convert it to h5 format
+    image_name_list = sorted(os.listdir(images_path))
+    for image_name in tqdm(image_name_list):
+        depth_name = image_name + '.geometric.bin'
+        depth_path = os.path.join(depths_path, depth_name)
+        if not os.path.exists(depth_path):
+            print(f"Depth map {depth_path} does not exist.")
+            continue
+
+        # First, let's load the depth map
+        depth_map = read_array(depth_path)
+
+        # Save the depth map as an h5 file
+        depth_to_h5(depth_map, image_name, depths_output)
+
+
+
 def parse_args():
     parser = argparse.ArgumentParser(description="Convert GES JSON to COLMAP format")
     parser.add_argument("--root_dir", type=Path, default='/mnt/slarge/megadepth_aerial_v2/data')
@@ -341,4 +403,9 @@ if __name__ == "__main__":
         image_dir = output_dir / "sfm_superpoint+superglue" / "images"
 
         run_mvs(sparse_sfm, dense_sfm, image_dir, gpu_idx=0)
+
+        # Postprocess the scene (re-organize and convert depth maps to h5 format)
+        postprocess_scene(output_dir, scene_number)
+
+
         
