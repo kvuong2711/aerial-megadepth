@@ -341,6 +341,4 @@ if __name__ == "__main__":
         image_dir = output_dir / "sfm_superpoint+superglue" / "images"
 
         run_mvs(sparse_sfm, dense_sfm, image_dir, gpu_idx=0)
-
-
-
+        
