@@ -1,6 +1,19 @@
-# Aerial-MegaDepth
+# AerialMegaDepth
+[[`arXiv`](https://arxiv.org/abs/XXXX.XXXXX)]
+[[`Project Page`](https://aerial-megadepth.github.io/)]
+[[`Bibtex`](#reference)]
 
-This repository contains the code release for [AerialMegaDepth: Learning Aerial-Ground Reconstruction and View Synthesis](https://aerial-megadepth.github.io).
+This repository contains code for our paper:
+
+**AerialMegaDepth: Learning Aerial-Ground Reconstruction and View Synthesis**
+Khiem Vuong, Anurag Ghosh, Deva Ramanan*, Srinivasa Narasimhan*, Shubham Tulsiani*
+CVPR 2025
+
+
+Clone the repository:
+```
+git clone --recursive https://github.com/kvuong2711/aerial-megadepth.git
+```
 
 
 ## Inference
