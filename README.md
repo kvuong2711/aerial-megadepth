@@ -5,8 +5,8 @@
 
 This repository contains code for our paper:
 
-**AerialMegaDepth: Learning Aerial-Ground Reconstruction and View Synthesis**\
-[Khiem Vuong]([khiemvuong.com](https://www.khiemvuong.com/)), [Anurag Ghosh](https://anuragxel.github.io/), [Deva Ramanan*](https://www.cs.cmu.edu/~deva), [Srinivasa Narasimhan*](https://www.cs.cmu.edu/~srinivas), [Shubham Tulsiani*](https://shubhtuls.github.io/)\
+**[AerialMegaDepth: Learning Aerial-Ground Reconstruction and View Synthesis](https://aerial-megadepth.github.io/)**\
+[Khiem Vuong](https://www.khiemvuong.com/), [Anurag Ghosh](https://anuragxel.github.io/), [Deva Ramanan*](https://www.cs.cmu.edu/~deva), [Srinivasa Narasimhan*](https://www.cs.cmu.edu/~srinivas), [Shubham Tulsiani*](https://shubhtuls.github.io/)\
 CVPR 2025
 
 
