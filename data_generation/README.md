@@ -144,5 +144,3 @@ megadepth_aerial_tv/
 ```
 
 ---
-
-Let me know if you'd like this split into a checklist or numbered steps, or if you'd like help formatting the CLI commands for running each stage.
