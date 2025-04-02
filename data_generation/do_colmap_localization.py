@@ -406,6 +406,4 @@ if __name__ == "__main__":
 
         # Postprocess the scene (re-organize and convert depth maps to h5 format)
         postprocess_scene(output_dir, scene_number)
-
-
         
