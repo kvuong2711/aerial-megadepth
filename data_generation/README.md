@@ -1,8 +1,25 @@
 # Aerial-MegaDepth Data Generation
 
-This repository provides a dataset and pipeline for generating pseudo-synthetic multi-view image collections using Google Earth and MegaDepth. It includes pre-rendered samples as well as instructions for generating your own data from scratch.
+This repository provides a dataset and pipeline for generating pseudo-synthetic multi-view image collections using Google Earth and MegaDepth. It includes a minimal example as well as instructions for generating your own data from scratch.
 
-> **Disclaimer**: Due to licensing restrictions, we do not redistribute Google Earth or MegaDepth images in bulk. Instead, we provide a minimal example and tools to reproduce the full dataset.
+## Table of Contents
+- [Aerial-MegaDepth Data Generation](#aerial-megadepth-data-generation)
+  - [Table of Contents](#table-of-contents)
+  - [📦 Sample Data](#-sample-data)
+    - [Download via CLI](#download-via-cli)
+    - [Sample Data Structure](#sample-data-structure)
+  - [🛠️ Generating Data from Scratch](#️-generating-data-from-scratch)
+    - [0️⃣ Prerequisites](#0️⃣-prerequisites)
+    - [1️⃣ Generating Pseudo-Synthetic Data from Google Earth Studio](#1️⃣-generating-pseudo-synthetic-data-from-google-earth-studio)
+      - [Step 1: Render Using Google Earth Studio](#step-1-render-using-google-earth-studio)
+      - [Step 2: Extract Frames \& Align Metadata](#step-2-extract-frames--align-metadata)
+    - [2️⃣ Registering to MegaDepth](#2️⃣-registering-to-megadepth)
+      - [Step 1: Prepare MegaDepth Images](#step-1-prepare-megadepth-images)
+      - [Step 2: Run the Data Registration Pipeline](#step-2-run-the-data-registration-pipeline)
+      - [(Optional) Step 3: Prepare Data for Training DUSt3R/MASt3R](#optional-step-3-prepare-data-for-training-dust3rmast3r)
+  - [Issues](#issues)
+  - [License](#license)
+
 
 ## 📦 Sample Data
 
@@ -40,7 +57,7 @@ The full pipeline involves two stages:
 2. [Registering to MegaDepth](#2-registering-to-megadepth)
 
 ### 0️⃣ Prerequisites
-We provided a `.npz` file containing a list of images from MegaDepth in `datasets_preprocess/megadepth_image_list_v0.npz`. These images will be registered to the pseudo-synthetic data.
+We provided a `.npz` file containing a list of scenes and images from MegaDepth in `datasets_preprocess/megadepth_image_list_v0.npz`. These images will be registered to the corresponding pseudo-synthetic data.
 
 ### 1️⃣ Generating Pseudo-Synthetic Data from Google Earth Studio
 
@@ -84,7 +101,7 @@ megadepth_aerial_data/
     └── ...
 ```
 
-> 💡 **Note:** This step requires manual interaction with Google Earth Studio which is a bit inconvenient. Therefore, we actively welcome [PRs](https://github.com/your-repo-url) or discussions that help automate this step or streamline rendering workflows.
+> 💡 Note: This step currently requires manual interaction with Google Earth Studio, which can be inconvenient. We actively welcome PRs or discussions that explore ways to automate or streamline this step!
 
 #### Step 2: Extract Frames & Align Metadata
 
@@ -149,7 +166,7 @@ Each `.jpg` file corresponds to a view and is paired with:
 - a `.exr` file containing a depth map in metric scale
 
 
-#### Step 2: Run the Data Generation Pipeline
+#### Step 2: Run the Data Registration Pipeline
 
 With both pseudo-synthetic frames and preprocessed MegaDepth data prepared, run the localization and reconstruction pipeline using:
 
@@ -173,3 +190,20 @@ megadepth_aerial_data/
                     ├── depths/           # MVS depth maps
                     └── sparse-txt/       # COLMAP poses + intrinsics (text format)
 ```
+
+#### (Optional) Step 3: Prepare Data for Training DUSt3R/MASt3R
+
+Use the following script to preprocess the data to be compatible with DUSt3R or MASt3R training:
+
+```bash
+python datasets_preprocess/preprocess_aerialmegadepth.py \
+    --megasynth_dir EMPTY \
+    --precomputed_pairs EMPTY \
+    --output_dir EMPTY
+```
+
+## Issues
+If you have trouble preparing the dataset, feel free to reach out to me via [email](mailto:kvuong@andrew.cmu.edu).
+
+## License
+*Google Earth data belong to [Google](https://www.google.com/earth/studio/faq/) and is available for non-commercial research purposes only.*
