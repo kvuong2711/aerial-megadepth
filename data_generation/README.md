@@ -2,13 +2,13 @@
 
 This repository provides a dataset and pipeline for generating pseudo-synthetic multi-view image collections using Google Earth and MegaDepth. It includes pre-rendered samples as well as instructions for generating your own data from scratch.
 
-> ⚠️ **Disclaimer**: Due to licensing restrictions, we do not redistribute Google Earth or MegaDepth images in bulk. Instead, we provide a minimal example and tools to reproduce the full dataset.
+> **Disclaimer**: Due to licensing restrictions, we do not redistribute Google Earth or MegaDepth images in bulk. Instead, we provide a minimal example and tools to reproduce the full dataset.
 
 ## 📦 Sample Data
 
 We provide a sample scene (`0001`) to illustrate the format and structure of the dataset. You can download it directly using the AWS CLI.
 
-### 🔽 Download via CLI
+### Download via CLI
 
 First, install the [AWS CLI](https://aws.amazon.com/cli/) if you haven’t already. Then run:
 
@@ -18,7 +18,7 @@ aws s3 sync s3://aerial-megadepth/full_data/0001 megadepth_aerial_data/data/0001
 ```
 This command will download the sample scene data to `megadepth_aerial_data/data/0001`.
 
-### 📁 Sample Data Structure
+### Sample Data Structure
 
 ```
 megadepth_aerial_tv/
