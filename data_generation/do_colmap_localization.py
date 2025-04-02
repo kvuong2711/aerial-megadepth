@@ -362,9 +362,9 @@ def postprocess_scene(base_undistorted_sfm_path, scene_id):
 
 def parse_args():
     parser = argparse.ArgumentParser(description="Convert GES JSON to COLMAP format")
-    parser.add_argument("--root_dir", type=Path, default='/mnt/slarge/megadepth_aerial_v2/data')
-    parser.add_argument("--megadepth_dir", type=Path, default='/mnt/slarge/dust3r_data/megadepth_processed_extra')
-    # parser.add_argument("--scene_number", type=Path, required=True, help="Path to the JSON file")
+    parser.add_argument("--root_dir", type=Path, required=True, help='Path to the root directory containing the scene folders')
+    parser.add_argument("--megadepth_dir", type=Path, required=True, help='Path to the processed MegaDepth dataset directory')
+    parser.add_argument("--megadepth_image_list", type=Path, required=True, help='Path to .npz file listing scene names to process')
     args = parser.parse_args()
     return args
 
@@ -373,10 +373,16 @@ if __name__ == "__main__":
     init_args = parse_args()
     root_dir = init_args.root_dir
     megadepth_dir = init_args.megadepth_dir
+    megadepth_image_list = init_args.megadepth_image_list
 
-    synthetic_scenes = ['0001']
+    # Load the megadepth image list
+    megadepth_data_dict = np.load(megadepth_image_list, allow_pickle=True)['data'].item()
+    synthetic_scenes = list(megadepth_data_dict.keys())
+    synthetic_scenes = [scene[0] for scene in synthetic_scenes]  # (scene_id, subscene_id)
+    print('Loading a total of {} scenes'.format(len(synthetic_scenes)))
     
     for scene_number in synthetic_scenes:
+        # Check if the scene folder exists
         data_folder_dir = root_dir / f'{scene_number}'
         json_file = data_folder_dir / f'{scene_number}.json'
         assert json_file.exists(), f"JSON file {json_file} does not exist"
@@ -406,4 +412,3 @@ if __name__ == "__main__":
 
         # Postprocess the scene (re-organize and convert depth maps to h5 format)
         postprocess_scene(output_dir, scene_number)
-        
