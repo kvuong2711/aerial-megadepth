@@ -2,12 +2,14 @@
 
 # AerialMegaDepth: Learning Aerial-Ground Reconstruction and View Synthesis
 
-[Khiem Vuong](https://www.khiemvuong.com/), [Anurag Ghosh](https://anuragxel.github.io/), [Deva Ramanan*](https://www.cs.cmu.edu/~deva), [Srinivasa Narasimhan*](https://www.cs.cmu.edu/~srinivas), [Shubham Tulsiani*](https://shubhtuls.github.io/)\
-${{\color{Red}\Huge{\textsf{  CVPR\ 2025\ \}}}}\$
+[Khiem Vuong](https://www.khiemvuong.com/), [Anurag Ghosh](https://anuragxel.github.io/), [Deva Ramanan*](https://www.cs.cmu.edu/~deva), [Srinivasa Narasimhan*](https://www.cs.cmu.edu/~srinivas), [Shubham Tulsiani*](https://shubhtuls.github.io/)
 
 [[`arXiv`](https://arxiv.org/abs/XXXX.XXXXX)]
 [[`Project Page`](https://aerial-megadepth.github.io/)]
 [[`Bibtex`](#reference)]
+
+${{\color{RoyalBlue}\Huge{\textsf{  CVPR\ 2025\ \}}}}\$
+
 </div>
 
 
