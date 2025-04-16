@@ -12,16 +12,16 @@ ${{\color{RoyalBlue}\Huge{\textsf{  CVPR\ 2025\ \}}}}\$
 
 </div>
 
+This repo contains the official code for our paper "AerialMegaDepth: Learning Aerial-Ground Reconstruction and View Synthesis" (CVPR 2025).
 
-## Get Started
-We provide DUSt3R checkpoint fine-tuned on our AerialMegaDepth dataset. It is fully compatible with the original DUSt3R codebase - if you already have DUSt3R set up, you can simply swap the checkpoint! Below, we provide the full set-up instructions (mostly copied from [DUSt3R repo](https://github.com/naver/dust3r)).
+## Installation
 
-### Installation
+Below, we provide the full setup instructions (mostly following [MASt3R repo](https://github.com/naver/mast3r)). We will follow the MASt3R setup since it encapsulates DUSt3R, but they should be very similar.
 
 1. Clone the repository:
 ```bash
 git clone --recursive https://github.com/kvuong2711/aerial-megadepth.git
-cd aerial-megadepth
+cd aerial-megadepth/mast3r
 
 # If you already cloned the repository, you can update the submodules:
 # git submodule update --init --recursive
@@ -42,34 +42,46 @@ cd dust3r/croco/models/curope/
 python setup.py build_ext --inplace
 cd ../../../../
 ```
+
+## Inference
+Our checkpoints are fully compatible with the original DUSt3R/MASt3R/MASt3R-SfM codebase - if you already have them set up, you can simply swap the checkpoint for aerial-ground scenarios!
+
 ### Checkpoints
 
-To download the DUSt3R checkpoint finetuned on our AerialMegaDepth dataset:
+To download the DUSt3R and MASt3R checkpoint finetuned on our AerialMegaDepth dataset:
 
 ```bash
-cd dust3r
+# you are inside aerial-megadepth/mast3r
 mkdir -p checkpoints/
-wget https://download.europe.naverlabs.com/ComputerVision/DUSt3R/DUSt3R_ViTLarge_BaseDecoder_512_dpt.pth -P checkpoints/
+wget /TODO/TODO/TODO/checkpoint-XXX.pth -P checkpoints/
+wget /TODO/TODO/TODO/checkpoint-XXX.pth -P checkpoints/
 ```
 
-### Inference
+### Demo
+We provide a few example image pairs in the [assets](assets) folder for quick testing. You can run inference using the following commands:
 
-To run the inference code, you can use the following command:
-
+- DUSt3R demo code:
 ```bash
-python demo.py --
+python demo_dust3r_nongradio.py --weights checkpoints/checkpoint-XXX.pth
 ```
 
+- MASt3R demo code:
+```bash
+python demo_mast3r_nongradio.py --weights checkpoints/checkpoint-XXX.pth
+```
 
-## Data Generation
-For data generation, please refer to the [data_generation](data_generation) folder.
+Each script contains predefined image paths to demonstrate typical use cases. You can modify the `image_list` variable inside the script to try different pairs.
 
+## Data Downloading and Generation
+For instructions on how to download and/or generate the data, please refer to [data_generation](data_generation).
 
-## Issues
-If you have trouble preparing the dataset, feel free to reach out to me via [email](mailto:kvuong@andrew.cmu.edu).
+## Acknowledgement
+This codebase is inspired by and built upon many awesome works:
+- [MegaDepth](https://www.cs.cornell.edu/projects/megadepth)
+- [DUSt3R](https://github.com/naver/dust3r), [MASt3R](https://github.com/naver/mast3r)
+- [hloc](https://github.com/cvg/Hierarchical-Localization), [COLMAP](https://github.com/colmap/colmap)
 
 ## Reference
-
 If you find our work to be useful in your research, please consider citing our paper:
 
 ```bibtex
@@ -80,3 +92,6 @@ If you find our work to be useful in your research, please consider citing our p
   year={2025},
 }
 ```
+
+## Issues
+If you have any problem/question/suggestion, feel free to create an issue or reach out directly to me via [email](mailto:kvuong@andrew.cmu.edu).
