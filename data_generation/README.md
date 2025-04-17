@@ -1,18 +1,23 @@
 # Aerial-MegaDepth Data Generation
 
-We provide data and pipeline for generating pseudo-synthetic multi-view image collections using Google Earth and MegaDepth. It includes a minimal example as well as instructions for generating your own data from scratch.
+We provide data and pipeline for generating our AerialMegaDepth dataset using Google Earth and MegaDepth. It includes a minimal example as well as instructions for generating your own data from scratch.
 
 ## Table of Contents
-  - [📦 Sample Data](#-sample-data)
-    - [Download via CLI](#download-via-cli)
-    - [Sample Data Structure](#sample-data-structure)
-  - [🛠️ Generating Data from Scratch](#️-generating-data-from-scratch)
-    - [0️⃣ Prerequisites](#0️⃣-prerequisites)
-    - [1️⃣ Generating Pseudo-Synthetic Data from Google Earth Studio](#1️⃣-generating-pseudo-synthetic-data-from-google-earth-studio)
-    - [2️⃣ Registering to MegaDepth](#2️⃣-registering-to-megadepth)
-  - [Issues](#issues)
-  - [License](#license)
+- [📦 Sample Data](#-sample-data)  
+  - [Download via CLI](#download-via-cli)  
+  - [Sample Data Structure](#sample-data-structure)  
+- [🛠️ Generating Data from Scratch](#️-generating-data-from-scratch)  
+  - [0️⃣ Prerequisites](#0️⃣-prerequisites)  
+  - [1️⃣ Generating Pseudo-Synthetic Data from Google Earth Studio](#1️⃣-generating-pseudo-synthetic-data-from-google-earth-studio)  
+  - [2️⃣ Registering to MegaDepth](#2️⃣-registering-to-megadepth)   
+  - [🧪 (Optional) Prepare Data for Training DUSt3R/MASt3R](#🧪-optional-prepare-data-for-training-dust3rmast3r)  
+- [License](#license)
 
+
+## 💡 Before you start...
+> For the following commands, `/mnt/slarge2/` is our local directory path where we store the data. You should replace it with the appropriate path on your machine.
+
+> If you run into issues preparing the dataset or are working on a research project that could benefit from our training data (particularly for academic use), feel free to reach out to me via [email](mailto:kvuong@andrew.cmu.edu). I'll do my best to help!
 
 ## 📦 Sample Data
 
@@ -46,11 +51,11 @@ megadepth_aerial_data/
 
 The full pipeline involves two stages:
 
-1. [Generating Pseudo-Synthetic Data](#1-generating-pseudo-synthetic-data)  
+1. [Generating Pseudo-Synthetic Data](#1-generating-pseudo-synthetic-data-from-google-earth-studio)  
 2. [Registering to MegaDepth](#2-registering-to-megadepth)
 
 ### 0️⃣ Prerequisites
-We provided a `.npz` file containing a list of scenes and images from MegaDepth in `datasets_preprocess/megadepth_image_list_v0.npz`. These images will be registered to the corresponding pseudo-synthetic data.
+We provided a `.npz` file containing a list of scenes and images from MegaDepth in `datasets_preprocess/megadepth_image_list.npz`. These images will be registered to the corresponding pseudo-synthetic data.
 
 ### 1️⃣ Generating Pseudo-Synthetic Data from Google Earth Studio
 
@@ -96,14 +101,14 @@ megadepth_aerial_data/
 
 > 💡 Note: This step currently requires manual interaction with Google Earth Studio, which can be inconvenient. We actively welcome PRs or discussions that explore ways to automate or streamline this step!
 
-#### Step 2: Extract Frames & Align Metadata
+#### Step 2: Extract Images & Metadata
 
-Use the provided script to extract frames from each `.mp4` video and align them with camera metadata from the corresponding `.json` file:
+Use the provided script to extract frames from each `.mp4` video and also extract camera metadata from the corresponding `.json` file:
 
 ```bash
 python datasets_preprocess/preprocess_ge.py \
     --data_root /mnt/slarge2/megadepth_aerial_data \
-    --scene_list ./datasets_preprocess/megadepth_image_list_v0.npz
+    --scene_list ./datasets_preprocess/megadepth_image_list.npz
 ```
 
 This will generate per-scene folders with extracted frames and frame-aligned metadata:
@@ -134,7 +139,7 @@ Then, use the provided preprocessing script to extract RGB images, depth maps, a
 ```bash
 python datasets_preprocess/preprocess_megadepth.py \
     --megadepth_dir /mnt/slarge/megadepth_original/MegaDepth_v1_SfM \
-    --megadepth_image_list ./datasets_preprocess/megadepth_image_list_v0.npz \
+    --megadepth_image_list ./datasets_preprocess/megadepth_image_list.npz \
     --output_dir /mnt/slarge2/megadepth_processed
 ```
 
@@ -160,6 +165,8 @@ Each `.jpg` file corresponds to a view and is paired with:
 
 
 #### Step 2: Run the Data Registration Pipeline
+※ Dependencies can be installed following the instructions in the [hloc repository](https://github.com/cvg/Hierarchical-Localization).
+
 
 With both pseudo-synthetic frames and preprocessed MegaDepth data prepared, run the localization and reconstruction pipeline using:
 
@@ -167,7 +174,7 @@ With both pseudo-synthetic frames and preprocessed MegaDepth data prepared, run 
 python do_colmap_localization.py \
     --root_dir /mnt/slarge2/megadepth_aerial_data/data \
     --megadepth_dir /mnt/slarge2/megadepth_processed/ \
-    --megadepth_image_list ./datasets_preprocess/megadepth_image_list_v0.npz
+    --megadepth_image_list ./datasets_preprocess/megadepth_image_list.npz
 ```
 
 The output is saved per scene as:
@@ -184,19 +191,24 @@ megadepth_aerial_data/
                     └── sparse-txt/       # COLMAP poses + intrinsics (text format)
 ```
 
-#### (Optional) Step 3: Prepare Data for Training DUSt3R/MASt3R
+### 🧪 (Optional) Prepare Data for Training DUSt3R/MASt3R
+We provide the precomputed pairs for training DUSt3R/MASt3R. First, download the precomputed pairs:
+
+```bash
+mkdir -p data_splits
+wget https://aerial-megadepth.s3.us-east-2.amazonaws.com/data_splits/aerial_megadepth_train_part1.npz -P data_splits
+wget https://aerial-megadepth.s3.us-east-2.amazonaws.com/data_splits/aerial_megadepth_train_part2.npz -P data_splits
+wget https://aerial-megadepth.s3.us-east-2.amazonaws.com/data_splits/aerial_megadepth_val.npz -P data_splits
+```
 
 Use the following script to preprocess the data to be compatible with DUSt3R or MASt3R training:
 
 ```bash
 python datasets_preprocess/preprocess_aerialmegadepth.py \
-    --megasynth_dir EMPTY \
-    --precomputed_pairs EMPTY \
-    --output_dir EMPTY
+    --megadepth_aerial_dir /mnt/slarge2/megadepth_aerial_data/data \
+    --precomputed_pairs ./data_splits/aerial_megadepth_train_part1.npz \
+    --output_dir /mnt/slarge2/megadepth_aerial_processed
 ```
 
-## Issues
-If you have problems preparing the dataset, feel free to reach out to me via [email](mailto:kvuong@andrew.cmu.edu) or open an issue. I'll do my best to help!
-
 ## License
-*Google Earth data belong to [Google](https://www.google.com/earth/studio/faq/) and is available for non-commercial research purposes only.*
+Google Earth data belong to [Google](https://www.google.com/earth/studio/faq/) and is available for non-commercial research purposes only. For full information, please refer to their [TOS](https://earthengine.google.com/terms/).

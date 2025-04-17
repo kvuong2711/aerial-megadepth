@@ -85,14 +85,11 @@ python demo_mast3r_nongradio.py --weights checkpoints/checkpoint-aerial-mast3r.p
 ![matching example](assets/figures/matches_figure.png)
 
 ## Evaluation
-First, download the evaluation data and unzip it:
-```bash
-wget https://aerial-megadepth.s3.us-east-2.amazonaws.com/eval_data_release.zip -P ./
-mkdir -p data/
-unzip eval_data_release.zip -d data/
-```
 
-Then, run the evaluation script:
+[ ] **TODO:** Evaluation data will be released soon.
+
+
+Once data is downloaded, run the evaluation script:
 ```bash
 python eval.py \
     --weights checkpoints/checkpoint-aerial-dust3r.pth \

@@ -21,9 +21,9 @@ import shutil
 def get_parser():
     import argparse
     parser = argparse.ArgumentParser()
-    parser.add_argument('--megasynth_dir', required=True)
+    parser.add_argument('--megadepth_aerial_dir', required=True)
     parser.add_argument('--precomputed_pairs', required=True)
-    parser.add_argument('--output_dir', default='data/megasynth_processed')
+    parser.add_argument('--output_dir', default='data/megadepth_aerial_processed')
     return parser
 
 
@@ -46,8 +46,6 @@ def main(db_root, pairs_path, output_dir):
             scene = images_scene_name[image_id]
             scene_id = np.where(scenes == scene)[0][0]
             todo[scene_id].add(image_id)
-        # else:
-        #     print(image_id, image, images_scene_name[image_id])
 
     print('Number of unique images:', np.sum([len(v) for v in todo.values()]))
 
@@ -61,76 +59,30 @@ def main(db_root, pairs_path, output_dir):
         # load all camera params
         _, pose_w2cam, intrinsics = _load_kpts_and_poses(db_root, scene, intrinsics=True)
 
-        # # in_dir = osp.join(db_root, scene, 'dense' + subscene)
-        in_dir = osp.join(os.path.dirname(db_root), scene, "sfm_output_localization", "sfm_superpoint+superglue", "localized_dense")
+        in_dir = osp.join(db_root, scene, "sfm_output_localization", "sfm_superpoint+superglue", "localized_dense_metric")
         args = [(in_dir, img, intrinsics[img], pose_w2cam[img], out_dir)
                 for img in [images[im_id] for im_id in im_idxs]]
         
-        # normal loop
-        # for arg in args:
-        #     resize_one_image(*arg)
         parallel_threads(resize_one_image, args, star_args=True, front_num=0, leave=False, desc=f'{scene}')
-
-
-    # # for each scene, load intrinsics and then parallel crops
-    # for scene, im_idxs in tqdm(todo.items(), desc='Overall'):
-    #     scene, subscene = scenes[scene].split()
-    #     out_dir = osp.join(output_dir, scene, subscene)
-    #     os.makedirs(out_dir, exist_ok=True)
-
-    #     # load all camera params
-    #     _, pose_w2cam, intrinsics = _load_kpts_and_poses(db_root, scene, subscene, intrinsics=True)
-
-    #     # in_dir = osp.join(db_root, scene, 'dense' + subscene)
-    #     in_dir = osp.join(os.path.dirname(db_root), 'phoenix/S6/zl548/MegaDepth_v1/', scene, 'dense' + subscene)
-    #     args = [(in_dir, img, intrinsics[img], pose_w2cam[img], out_dir)
-    #             for img in [images[im_id] for im_id in im_idxs]]
-    #     parallel_threads(resize_one_image, args, star_args=True, front_num=0, leave=False, desc=f'{scene}/{subscene}')
 
     # save pairs
     print('Done! prepared all pairs in', output_dir)
 
 
 def resize_one_image(root, tag, K_pre_rectif, pose_w2cam, out_dir):
-    # if osp.isfile(osp.join(out_dir, tag + '.npz')):
-    #     return
-
-    # # load image
-    # img = cv2.cvtColor(cv2.imread(osp.join(root, 'images', tag), cv2.IMREAD_COLOR), cv2.COLOR_BGR2RGB)
-    # H, W = img.shape[:2]
-
-    # H, W = 1080, 1920  # TODO: this is just for megasynth where image size is constant
-
     # load depth
     with h5py.File(osp.join(root, 'depths', osp.splitext(tag)[0] + '.h5'), 'r') as hd5:
         depthmap = np.asarray(hd5['depth'])
 
     # rectify = undistort the intrinsics
     imsize_pre, K_pre, distortion = K_pre_rectif
-    # imsize_post = img.shape[1::-1]
-    # K_post = cv2.getOptimalNewCameraMatrix(K_pre, distortion, imsize_pre, alpha=0,
-    #                                        newImgSize=imsize_post, centerPrincipalPoint=True)[0]
 
-    # # downscale
-    # img_out, depthmap_out, intrinsics_out, R_in2out = _downscale_image(K_post, img, depthmap, resolution_out=(800, 600))
-    # img_out, depthmap_out, intrinsics_out, R_in2out = PIL.Image.fromarray(img), depthmap, K_pre, np.eye(3)
     depthmap_out, intrinsics_out, R_in2out = depthmap, K_pre, np.eye(3)
     # let's set the depth too far away to 0.0
     MAX_DEPTH = 2000
     depthmap_out[depthmap_out > MAX_DEPTH] = 0.0
-    # Load segmentation
-    # seg = PIL.Image.open(osp.join(root, 'segmentation', osp.splitext(tag)[0] + '.png'))
-    ext = osp.splitext(tag)[1]
-    seg = PIL.Image.open(osp.join(root, 'segmentation', tag.replace(ext, '.png')))
-    seg = np.array(seg)
-    # mask out sky (2) and person (12)
-    mask = (seg == 2) | (seg == 12)
-    depthmap_out[mask] = 0.0
-    # plt.imshow(mask)
-    # plt.show()
 
     # write everything
-    # img_out.save(osp.join(out_dir, tag + '.jpg'), quality=90)
     # copy the image to the output directory
     shutil.copy(osp.join(root, 'images', tag), osp.join(out_dir, tag + '.jpg'))
     cv2.imwrite(osp.join(out_dir, tag + '.exr'), depthmap_out)
@@ -138,14 +90,6 @@ def resize_one_image(root, tag, K_pre_rectif, pose_w2cam, out_dir):
     camout2world[:3, :3] = camout2world[:3, :3] @ R_in2out.T
     np.savez(osp.join(out_dir, tag + '.npz'), intrinsics=intrinsics_out, cam2world=camout2world)
 
-
-
-    # # write everything
-    # # img_out.save(osp.join(out_dir, tag + '.jpg'), quality=90)
-    # cv2.imwrite(osp.join(out_dir, tag + '.exr'), depthmap_out)
-    # camout2world = np.linalg.inv(pose_w2cam)
-    # camout2world[:3, :3] = camout2world[:3, :3] @ R_in2out.T
-    # np.savez(osp.join(out_dir, tag + '.npz'), intrinsics=intrinsics_out, cam2world=camout2world)
 
 
 def _downscale_image(camera_intrinsics, image, depthmap, resolution_out=(512, 384)):
@@ -161,7 +105,7 @@ def _downscale_image(camera_intrinsics, image, depthmap, resolution_out=(512, 38
 
 def _load_kpts_and_poses(root, scene_id, z_only=False, intrinsics=False):
     if intrinsics:
-        with open(os.path.join(root, scene_id, "sfm_output_localization", "sfm_superpoint+superglue", "localized_dense", 'sparse-txt', 'cameras.txt'), 'r') as f:
+        with open(os.path.join(root, scene_id, "sfm_output_localization", "sfm_superpoint+superglue", "localized_dense_metric", 'sparse-txt', 'cameras.txt'), 'r') as f:
             raw = f.readlines()[3:]  # skip the header
 
         camera_intrinsics = {}
@@ -175,7 +119,7 @@ def _load_kpts_and_poses(root, scene_id, z_only=False, intrinsics=False):
             K[1, 2] = cy
             camera_intrinsics[int(camera[0])] = ((int(width), int(height)), K, (0, 0, 0, 0))
 
-    with open(os.path.join(root, scene_id, "sfm_output_localization", "sfm_superpoint+superglue", "localized_dense", 'sparse-txt', 'images.txt'), 'r') as f:
+    with open(os.path.join(root, scene_id, "sfm_output_localization", "sfm_superpoint+superglue", "localized_dense_metric", 'sparse-txt', 'images.txt'), 'r') as f:
         raw = f.read().splitlines()[4:]  # skip the header
 
     extract_pose = colmap_raw_pose_to_principal_axis if z_only else colmap_raw_pose_to_RT
@@ -251,4 +195,4 @@ def colmap_raw_pose_to_RT(image_pose):
 if __name__ == '__main__':
     parser = get_parser()
     args = parser.parse_args()
-    main(args.megasynth_dir, args.precomputed_pairs, args.output_dir)
+    main(args.megadepth_aerial_dir, args.precomputed_pairs, args.output_dir)

@@ -61,7 +61,7 @@ if __name__ == '__main__':
     # ]
 
     # image_list = [
-    #         '../assets/siteACC0003-finearts/siteACC0003-camA005-2023-10-19-11-38-16-000205.jpg',,
+    #         '../assets/siteACC0003-finearts/siteACC0003-camA005-2023-10-19-11-38-16-000205.jpg',
     #         '../assets/siteACC0003-finearts/siteACC0003-camA010-2023-12-21-19-43-25-000704.jpg',
     # ]
 
@@ -90,7 +90,7 @@ if __name__ == '__main__':
     ######### Visualize the 2D matches extracted from MASt3R's local feature maps
     subsample = 4  # subsample rate, the lower the denser the matches
     pixel_tol = 3
-    match_conf = 0.6
+    match_conf = 0.3
     print(f'Extracting correspondences with subsample={subsample}, pixel_tol={pixel_tol}, match_conf={match_conf}...')
     corres = extract_correspondences_nonsym(pred1['desc'][0], pred2['desc'][0], 
                                             pred1['desc_conf'][0], pred2['desc_conf'][0],

@@ -404,8 +404,8 @@ if __name__ == "__main__":
         run_colmap_localization(data_folder_dir, output_dir, query_images_folder_scene)
 
         # Now, run MVS
-        sparse_sfm = output_dir / "sfm_superpoint+superglue" / "localized_model_mapper"
-        dense_sfm = output_dir / "sfm_superpoint+superglue" / "localized_dense"
+        sparse_sfm = output_dir / "sfm_superpoint+superglue" / "localized_model_mapper_metric"
+        dense_sfm = output_dir / "sfm_superpoint+superglue" / "localized_dense_metric"
         image_dir = output_dir / "sfm_superpoint+superglue" / "images"
 
         run_mvs(sparse_sfm, dense_sfm, image_dir, gpu_idx=0)
