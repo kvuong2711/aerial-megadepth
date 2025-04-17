@@ -1,24 +1,16 @@
 # Aerial-MegaDepth Data Generation
 
-This repository provides a dataset and pipeline for generating pseudo-synthetic multi-view image collections using Google Earth and MegaDepth. It includes a minimal example as well as instructions for generating your own data from scratch.
+We provide data and pipeline for generating pseudo-synthetic multi-view image collections using Google Earth and MegaDepth. It includes a minimal example as well as instructions for generating your own data from scratch.
 
 ## Table of Contents
-- [Aerial-MegaDepth Data Generation](#aerial-megadepth-data-generation)
-  - [Table of Contents](#table-of-contents)
   - [📦 Sample Data](#-sample-data)
     - [Download via CLI](#download-via-cli)
     - [Sample Data Structure](#sample-data-structure)
   - [🛠️ Generating Data from Scratch](#️-generating-data-from-scratch)
     - [0️⃣ Prerequisites](#0️⃣-prerequisites)
     - [1️⃣ Generating Pseudo-Synthetic Data from Google Earth Studio](#1️⃣-generating-pseudo-synthetic-data-from-google-earth-studio)
-      - [Step 1: Render Using Google Earth Studio](#step-1-render-using-google-earth-studio)
-      - [Step 2: Extract Frames \& Align Metadata](#step-2-extract-frames--align-metadata)
     - [2️⃣ Registering to MegaDepth](#2️⃣-registering-to-megadepth)
-      - [Step 1: Prepare MegaDepth Images](#step-1-prepare-megadepth-images)
-      - [Step 2: Run the Data Registration Pipeline](#step-2-run-the-data-registration-pipeline)
-      - [(Optional) Step 3: Prepare Data for Training DUSt3R/MASt3R](#optional-step-3-prepare-data-for-training-dust3rmast3r)
   - [Issues](#issues)
-  - [License](#license)
 
 
 ## 📦 Sample Data
