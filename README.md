@@ -87,7 +87,7 @@ python demo_mast3r_nongradio.py --weights checkpoints/checkpoint-aerial-mast3r.p
 ## Evaluation
 First, download the evaluation data and unzip it:
 ```bash
-aws s3 sync s3://aerial-megadepth/eval_data_release.zip ./
+wget https://aerial-megadepth.s3.us-east-2.amazonaws.com/eval_data_release.zip -P ./
 mkdir -p data/
 unzip eval_data_release.zip -d data/
 ```
@@ -98,13 +98,13 @@ python eval.py \
     --weights checkpoints/checkpoint-aerial-dust3r.pth \
     --eval_data_dir data/eval_data_release
 ```
-This script (adapted from [PoseDiffusion](https://github.com/facebookresearch/PoseDiffusion)) reports RRA and RTA at thresholds of 5°, 10°, 15°, and 30°.
+This script (adapted from [PoseDiffusion](https://github.com/facebookresearch/PoseDiffusion)) reports RRA and RTA at various degree thresholds.
 
 ## Data Generation
 For instructions on how to download and/or generate the data, please refer to [data_generation](data_generation).
 
 ## Acknowledgement
-This codebase is inspired by and built upon many awesome works, such as [MegaDepth](https://www.cs.cornell.edu/projects/megadepth), [DUSt3R](https://github.com/naver/dust3r), [hloc](https://github.com/cvg/Hierarchical-Localization), [COLMAP](https://github.com/colmap/colmap), etc.
+This codebase builds upon many excellent open-source projects, such as [MegaDepth](https://www.cs.cornell.edu/projects/megadepth), [DUSt3R](https://github.com/naver/dust3r), [hloc](https://github.com/cvg/Hierarchical-Localization), [COLMAP](https://github.com/colmap/colmap), etc. We thank the respective authors for making their work publicly available.
 
 ## Reference
 If you find our work to be useful in your research, please consider citing our paper:
