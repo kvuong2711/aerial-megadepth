@@ -11,6 +11,7 @@ We provide data and pipeline for generating pseudo-synthetic multi-view image co
     - [1️⃣ Generating Pseudo-Synthetic Data from Google Earth Studio](#1️⃣-generating-pseudo-synthetic-data-from-google-earth-studio)
     - [2️⃣ Registering to MegaDepth](#2️⃣-registering-to-megadepth)
   - [Issues](#issues)
+  - [License](#license)
 
 
 ## 📦 Sample Data
@@ -195,7 +196,7 @@ python datasets_preprocess/preprocess_aerialmegadepth.py \
 ```
 
 ## Issues
-If you have trouble preparing the dataset, feel free to reach out to me via [email](mailto:kvuong@andrew.cmu.edu).
+If you have problems preparing the dataset, feel free to reach out to me via [email](mailto:kvuong@andrew.cmu.edu) or open an issue. I'll do my best to help!
 
 ## License
 *Google Earth data belong to [Google](https://www.google.com/earth/studio/faq/) and is available for non-commercial research purposes only.*

@@ -4,6 +4,8 @@
 
 [Khiem Vuong](https://www.khiemvuong.com/), [Anurag Ghosh](https://anuragxel.github.io/), [Deva Ramanan*](https://www.cs.cmu.edu/~deva), [Srinivasa Narasimhan*](https://www.cs.cmu.edu/~srinivas), [Shubham Tulsiani*](https://shubhtuls.github.io/)
 
+(* denotes equal contribution/advising)
+
 [[`arXiv`](https://arxiv.org/abs/XXXX.XXXXX)]
 [[`Project Page`](https://aerial-megadepth.github.io/)]
 [[`Bibtex`](#reference)]
@@ -15,7 +17,8 @@ ${{\color{RoyalBlue}\Huge{\textsf{  CVPR\ 2025\ \}}}}\$
 ## Table of Contents
 
 - [Installation](#installation)
-- [Usage](#usage)
+- [Quick Start](#quick-start)
+- [Evaluation](#evaluation)
 - [Data Generation](#data-generation)
 - [Acknowledgement](#acknowledgement)
 - [Reference](#reference)
@@ -51,7 +54,7 @@ python setup.py build_ext --inplace
 cd ../../../../
 ```
 
-## Usage
+## Quick Start
 Our finetuned checkpoints are fully compatible with the original DUSt3R/MASt3R/MASt3R-SfM codebase - if you already have them set up, you can simply swap the checkpoint for aerial-ground scenarios!
 
 ### Checkpoints
@@ -80,6 +83,22 @@ python demo_dust3r_nongradio.py --weights checkpoints/checkpoint-aerial-dust3r.p
 python demo_mast3r_nongradio.py --weights checkpoints/checkpoint-aerial-mast3r.pth
 ```
 ![matching example](assets/figures/matches_figure.png)
+
+## Evaluation
+First, download the evaluation data and unzip it:
+```bash
+aws s3 sync s3://aerial-megadepth/eval_data_release.zip ./
+mkdir -p data/
+unzip eval_data_release.zip -d data/
+```
+
+Then, run the evaluation script:
+```bash
+python eval.py \
+    --weights checkpoints/checkpoint-aerial-dust3r.pth \
+    --eval_data_dir data/eval_data_release
+```
+This script (adapted from [PoseDiffusion](https://github.com/facebookresearch/PoseDiffusion)) reports RRA and RTA at thresholds of 5°, 10°, 15°, and 30°.
 
 ## Data Generation
 For instructions on how to download and/or generate the data, please refer to [data_generation](data_generation).
