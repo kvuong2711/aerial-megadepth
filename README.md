@@ -86,8 +86,7 @@ python demo_mast3r_nongradio.py --weights checkpoints/checkpoint-aerial-mast3r.p
 
 ## Evaluation
 
-[ ] **TODO:** Evaluation data will be released soon.
-
+- [ ] **TODO:** Evaluation data will be released soon.
 
 Once data is downloaded, run the evaluation script:
 ```bash
