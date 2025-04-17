@@ -83,7 +83,9 @@ def plot_matches(kpts0, kpts1, color=None, lw=1.5, ps=4, indices=(0, 1), a=1.0):
 
     assert len(kpts0) == len(kpts1)
     if color is None:
-        color = matplotlib.cm.hsv(np.random.rand(len(kpts0))).tolist()
+        # color = matplotlib.cm.hsv(np.random.rand(len(kpts0))).tolist()
+        # jet colormap
+        color = matplotlib.cm.jet(np.linspace(0, 1, len(kpts0))).tolist()
     elif len(color) > 0 and not isinstance(color[0], (tuple, list)):
         color = [color] * len(kpts0)
 

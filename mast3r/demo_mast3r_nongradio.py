@@ -91,7 +91,7 @@ if __name__ == '__main__':
     subsample = 4  # subsample rate, the lower the denser the matches
     pixel_tol = 3
     match_conf = 0.6
-
+    print(f'Extracting correspondences with subsample={subsample}, pixel_tol={pixel_tol}, match_conf={match_conf}...')
     corres = extract_correspondences_nonsym(pred1['desc'][0], pred2['desc'][0], 
                                             pred1['desc_conf'][0], pred2['desc_conf'][0],
                                             device=device, subsample=subsample, pixel_tol=pixel_tol)
@@ -120,7 +120,10 @@ if __name__ == '__main__':
         rgb_tensor = view['img'] * image_std + image_mean
         viz_imgs.append(rgb_tensor.squeeze(0).permute(1, 2, 0).cpu().numpy())
 
+    # visualize the matches
+    subsample_viz = 4
+    print(f'Subsampling by {subsample_viz} when visualizing matches...')
     plot_images(viz_imgs, titles=None, cmaps="gray", dpi=100, pad=0.5, adaptive=True)
-    plot_matches(matches_im0, matches_im1, color='lime', lw=0.3, ps=2, a=0.9) # , ps=4, indices=(0, 1), a=0.5)
+    plot_matches(matches_im0[::subsample_viz], matches_im1[::subsample_viz], lw=0.3, ps=2, a=0.9) # , ps=4, indices=(0, 1), a=0.5)
 
     plt.show()
