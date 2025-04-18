@@ -6,7 +6,7 @@
 
 (* denotes equal contribution/advising)
 
-[[`arXiv`](https://arxiv.org/abs/XXXX.XXXXX)]
+[[`arXiv`](https://arxiv.org/abs/2504.13157)]
 [[`Project Page`](https://aerial-megadepth.github.io/)]
 [[`Bibtex`](#reference)]
 
