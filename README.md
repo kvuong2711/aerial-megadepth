@@ -21,7 +21,7 @@ ${{\color{RoyalBlue}\Huge{\textsf{  CVPR\ 2025\ \}}}}\$
 - [Evaluation](#evaluation)
 - [Data Generation](#data-generation)
 - [Acknowledgement](#acknowledgement)
-- [Reference](#reference)
+- [Citation](#citation)
 - [Issues](#issues)
 
 ## Installation
@@ -69,7 +69,7 @@ wget https://aerial-megadepth.s3.us-east-2.amazonaws.com/cvpr2025_checkpoints/ch
 ```
 
 ### Inference/Demo
-We provide a few example images in the [assets](assets) folder for quick testing, including images from [ULTRRA challenge](https://sites.google.com/view/ultrra-wacv-2025).
+We provide a few example images in the [assets](assets) folder for quick testing, including images from [ULTRRA challenge](https://sites.google.com/view/ultrra-wacv-2025) and [Accenture-NVS1](https://arxiv.org/pdf/2503.18711).
 
 Each script (e.g., [demo_dust3r_nongradio.py](mast3r/demo_dust3r_nongradio.py)) contains predefined image paths to demonstrate typical use cases. You can modify the `image_list` variable inside the script to try different pairs. You can run inference using the following commands:
 
@@ -102,7 +102,7 @@ For instructions on how to download and/or generate the data, please refer to [d
 ## Acknowledgement
 This codebase builds upon many excellent open-source projects, such as [MegaDepth](https://www.cs.cornell.edu/projects/megadepth), [DUSt3R](https://github.com/naver/dust3r), [hloc](https://github.com/cvg/Hierarchical-Localization), [COLMAP](https://github.com/colmap/colmap), etc. We thank the respective authors for making their work publicly available.
 
-## Reference
+## Citation
 If you find our work to be useful in your research, please consider citing our paper:
 
 ```bibtex
