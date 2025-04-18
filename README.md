@@ -8,7 +8,8 @@
 
 [[`arXiv`](https://arxiv.org/abs/2504.13157)]
 [[`Project Page`](https://aerial-megadepth.github.io/)]
-[[`Bibtex`](#reference)]
+[[`3D Web Viewer`](https://aerial-megadepth.github.io/web-viewer/)]
+[[`Bibtex`](#citation)]
 
 ${{\color{RoyalBlue}\Huge{\textsf{  CVPR\ 2025\ \}}}}\$
 
