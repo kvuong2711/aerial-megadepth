@@ -60,7 +60,11 @@ Our finetuned checkpoints are fully compatible with the original DUSt3R/MASt3R/M
 
 ### Checkpoints
 
-To download the DUSt3R and MASt3R checkpoint finetuned on our AerialMegaDepth dataset:
+There are two options for downloading DUSt3R and MASt3R checkpoint finetuned on our AerialMegaDepth dataset:
+
+1. You can use our huggingface_hub integration: the models ([aerial-dust3r](https://huggingface.co/kvuong2711/checkpoint-aerial-dust3r) or [aerial-mast3r](https://huggingface.co/kvuong2711/checkpoint-aerial-mast3r)) will be downloaded automatically.
+
+2. Or, download the checkpoints manually:
 
 ```bash
 # you are inside aerial-megadepth/mast3r
@@ -76,12 +80,18 @@ Each script (e.g., [demo_dust3r_nongradio.py](mast3r/demo_dust3r_nongradio.py)) 
 
 - DUSt3R demo code:
 ```bash
-python demo_dust3r_nongradio.py --weights checkpoints/checkpoint-aerial-dust3r.pth
+python demo_dust3r_nongradio.py --weights kvuong2711/checkpoint-aerial-dust3r
+
+# or, if you downloaded the checkpoints manually:
+# python demo_dust3r_nongradio.py --weights checkpoints/checkpoint-aerial-dust3r.pth
 ```
 
 - MASt3R demo code:
 ```bash
-python demo_mast3r_nongradio.py --weights checkpoints/checkpoint-aerial-mast3r.pth
+python demo_mast3r_nongradio.py --weights kvuong2711/checkpoint-aerial-mast3r
+
+# or, if you downloaded the checkpoints manually:
+# python demo_mast3r_nongradio.py --weights checkpoints/checkpoint-aerial-mast3r.pth
 ```
 ![matching example](assets/figures/matches_figure.png)
 
