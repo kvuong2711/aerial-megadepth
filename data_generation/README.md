@@ -11,7 +11,7 @@ We provide data and pipeline for generating our AerialMegaDepth dataset using Go
   - [0️⃣ Prerequisites](#0️⃣-prerequisites)  
   - [1️⃣ Generating Pseudo-Synthetic Data from Google Earth Studio](#1️⃣-generating-pseudo-synthetic-data-from-google-earth-studio)  
   - [2️⃣ Registering to MegaDepth](#2️⃣-registering-to-megadepth)   
-  - [🧪 (Optional) Prepare Data for Training DUSt3R/MASt3R](#🧪-optional-prepare-data-for-training-dust3rmast3r)  
+- [Prepare Data for Training DUSt3R/MASt3R](#prepare-data-for-training-dust3rmast3r)  
 - [License](#license)
 
 
@@ -196,21 +196,32 @@ megadepth_aerial_data/
                     └── sparse-txt/       # COLMAP poses + intrinsics (text format)
 ```
 
-### 🧪 (Optional) Prepare Data for Training DUSt3R/MASt3R
-We provide the precomputed pairs for training DUSt3R/MASt3R. First, download the precomputed pairs:
+## Prepare Data for Training DUSt3R/MASt3R
+- We provide the precomputed pairs for training DUSt3R/MASt3R. First, download the precomputed pairs:
 
-```bash
-python download_data.py --output_path ./ --gdrive_link "https://drive.google.com/open?id=19mGncey98Ci4lWuvl3BZ2_7I7_eKV6MS" --unzip --remove_zip
-```
+    ```bash
+    python download_data.py --output_path ./ --gdrive_link "https://drive.google.com/open?id=19mGncey98Ci4lWuvl3BZ2_7I7_eKV6MS" --unzip --remove_zip
+    ```
 
-Use the following script to preprocess the data to be compatible with DUSt3R or MASt3R training (e.g., for training on `aerial-megadepth_train_part1.npz`):
+- Use the following script to preprocess the data to be in the format compatible with DUSt3R or MASt3R training:
 
-```bash
-python datasets_preprocess/preprocess_aerialmegadepth.py \
-    --megadepth_aerial_dir /mnt/slarge2/megadepth_aerial_data/data \
-    --precomputed_pairs ./data_splits/aerial_megadepth_train_part1.npz \
-    --output_dir /mnt/slarge2/megadepth_aerial_processed
-```
+    ```bash
+    python datasets_preprocess/preprocess_aerialmegadepth.py \
+        --megadepth_aerial_dir /mnt/slarge2/megadepth_aerial_data/data \
+        --precomputed_pairs ./data_splits/aerial_megadepth_train_part1.npz \
+        --output_dir /mnt/slarge2/megadepth_aerial_processed
+    ```
+
+- (Optional) Since ground-truth depth maps computed from MVS often contain outliers, especially around object boundaries (e.g., between buildings and the sky), during training we apply semantic segmentation to detect sky regions and mask out their depth values. We provide precomputed semantic segmentation masks generated using [InternImage](https://github.com/OpenGVLab/InternImage). Note that the effect of this filtering step was not thoroughly analyzed in our paper. You can download the segmentation masks using:
+
+    ```bash
+    python download_data.py --output_path /mnt/slarge2/ --gdrive_link "https://drive.google.com/open?id=1j6wDFO1r5psNdBM8HIvk_cYGZa3Kde97" --unzip --remove_zip
+    ```
+
+    We provided a sample DUSt3R-based dataloader for training on AerialMegaDepth in [`misc/megadepth_aerial.py`](misc/megadepth_aerial.py).
+
+- Finetuning details: we follow exactly the original DUSt3R/MASt3R training settings by randomly sampling 100K pairs per epoch to train (see [here](https://github.com/naver/dust3r?tab=readme-ov-file#our-hyperparameters)), except to avoid overfitting, we use a smaller learning rate of `1e-5` for DUSt3R and `3e-5` for MASt3R.
+
 
 ## License
 Google Earth data belong to [Google](https://www.google.com/earth/studio/faq/) and is available for non-commercial research purposes only. For full information, please refer to their [TOS](https://earthengine.google.com/terms/). All data derived from Google is owned by Google, while other parts of the dataset from MegaDepth are subject to their original licensing terms.
