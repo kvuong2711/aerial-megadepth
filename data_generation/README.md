@@ -203,7 +203,7 @@ megadepth_aerial_data/
     python download_data.py --output_path ./ --gdrive_link "https://drive.google.com/open?id=19mGncey98Ci4lWuvl3BZ2_7I7_eKV6MS" --unzip --remove_zip
     ```
 
-- Use the following script to preprocess the data to be in the format compatible with DUSt3R or MASt3R training:
+    Then, use the following script to preprocess the data to be in the format compatible with DUSt3R or MASt3R training:
 
     ```bash
     python datasets_preprocess/preprocess_aerialmegadepth.py \
@@ -220,7 +220,7 @@ megadepth_aerial_data/
 
     We provided a sample DUSt3R-based dataloader for training on AerialMegaDepth in [`misc/megadepth_aerial.py`](misc/megadepth_aerial.py).
 
-- Finetuning details: we follow exactly the original DUSt3R/MASt3R training settings by randomly sampling 100K pairs per epoch to train (see [here](https://github.com/naver/dust3r?tab=readme-ov-file#our-hyperparameters)), except to avoid overfitting, we use a smaller learning rate of `1e-5` for DUSt3R and `3e-5` for MASt3R.
+- Finetuning details: we follow the original DUSt3R/MASt3R training settings by randomly sampling 100K pairs per epoch to train (see [here](https://github.com/naver/dust3r?tab=readme-ov-file#our-hyperparameters)), except to avoid overfitting, we use a smaller learning rate of `1e-5` for DUSt3R and `3e-5` for MASt3R.
 
 
 ## License
