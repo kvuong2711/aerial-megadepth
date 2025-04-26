@@ -3,8 +3,8 @@
 We provide data and pipeline for generating our AerialMegaDepth dataset using Google Earth and MegaDepth. It includes a minimal example as well as instructions for generating your own data from scratch.
 
 ## Table of Contents
-- [🗂️ Full Dataset Request](#🗂️-full-dataset-request)
-- [📦 Sample Data](#📦-sample-data)  
+- [🗂️ Full Dataset Request](#-full-dataset-request)
+- [📦 Sample Data](#-sample-data)  
   - [Download via CLI](#download-via-cli)  
   - [Sample Data Structure](#sample-data-structure)  
 - [🛠️ Generating Data from Scratch](#️-generating-data-from-scratch)  
