@@ -3,7 +3,8 @@
 We provide data and pipeline for generating our AerialMegaDepth dataset using Google Earth and MegaDepth. It includes a minimal example as well as instructions for generating your own data from scratch.
 
 ## Table of Contents
-- [📦 Sample Data](#-sample-data)  
+- [🗂️ Full Dataset Request](#🗂️-full-dataset-request)
+- [📦 Sample Data](#📦-sample-data)  
   - [Download via CLI](#download-via-cli)  
   - [Sample Data Structure](#sample-data-structure)  
 - [🛠️ Generating Data from Scratch](#️-generating-data-from-scratch)  
@@ -19,17 +20,21 @@ We provide data and pipeline for generating our AerialMegaDepth dataset using Go
 
 > If you run into issues preparing the dataset or are working on a research project that could benefit from our training data (particularly for academic use), feel free to reach out to me via [email](mailto:kvuong@andrew.cmu.edu). I'll do my best to help!
 
+
+## 🗂️ Full Dataset Request
+If you are interested in accessing the full dataset, please fill out this [Access Request Form](https://forms.gle/FrrverRecTFEwZKP9) and we will get back to you as soon as possible. Please note that the data is only available for non-commercial research purposes and strictly follows the [license](#license).
+
+
 ## 📦 Sample Data
 
-We provide a sample scene (`0001`) to illustrate the format and structure of the dataset. You can download it directly using the AWS CLI.
+We provide a sample scene (`0001`) to illustrate the format and structure of the dataset. You can download it directly from Google Drive by CLI using [gdown](https://github.com/wkentaro/gdown). We provide a simple script [download_data.py](download_data.py) to download the data and unzip it.
 
 ### Download via CLI
 
-You can use [AWS CLI](https://aws.amazon.com/cli/) to download the sample data:
+You can use [gdown](https://github.com/wkentaro/gdown) to download the sample data (install using `pip install gdown`):
 
 ```bash
-mkdir -p /mnt/slarge2/megadepth_aerial_data/data
-aws s3 sync s3://aerial-megadepth/full_data/0001 /mnt/slarge2/megadepth_aerial_data/data/0001
+python download_data.py --output_path /mnt/slarge2/megadepth_aerial_data/data --gdrive_link "https://drive.google.com/open?id=1o8KGGicgMwp3ZK5FR5pRZIbHTwfndyiS" --unzip --remove_zip
 ```
 This command will download the sample scene data to `/mnt/slarge2/megadepth_aerial_data/data/0001`.
 
@@ -66,7 +71,7 @@ This stage creates video frames and camera metadata using Google Earth Studio.
 Each scene comes with pre-defined camera parameters in `.esp` format. You can download all `.esp` files using:
 
 ```bash
-aws s3 sync s3://aerial-megadepth/geojsons /mnt/slarge2/megadepth_aerial_data/geojsons
+python download_data.py --output_path /mnt/slarge2/megadepth_aerial_data/ --gdrive_link "https://drive.google.com/open?id=1V-8ISc3OP7eZTpD2phcvB0O65m8ndnjs" --unzip --remove_zip
 ```
 
 Directory structure:
@@ -195,13 +200,10 @@ megadepth_aerial_data/
 We provide the precomputed pairs for training DUSt3R/MASt3R. First, download the precomputed pairs:
 
 ```bash
-mkdir -p data_splits
-wget https://aerial-megadepth.s3.us-east-2.amazonaws.com/data_splits/aerial_megadepth_train_part1.npz -P data_splits
-wget https://aerial-megadepth.s3.us-east-2.amazonaws.com/data_splits/aerial_megadepth_train_part2.npz -P data_splits
-wget https://aerial-megadepth.s3.us-east-2.amazonaws.com/data_splits/aerial_megadepth_val.npz -P data_splits
+python download_data.py --output_path ./ --gdrive_link "https://drive.google.com/open?id=19mGncey98Ci4lWuvl3BZ2_7I7_eKV6MS" --unzip --remove_zip
 ```
 
-Use the following script to preprocess the data to be compatible with DUSt3R or MASt3R training:
+Use the following script to preprocess the data to be compatible with DUSt3R or MASt3R training (e.g., for training on `aerial-megadepth_train_part1.npz`):
 
 ```bash
 python datasets_preprocess/preprocess_aerialmegadepth.py \
@@ -211,4 +213,4 @@ python datasets_preprocess/preprocess_aerialmegadepth.py \
 ```
 
 ## License
-Google Earth data belong to [Google](https://www.google.com/earth/studio/faq/) and is available for non-commercial research purposes only. For full information, please refer to their [TOS](https://earthengine.google.com/terms/).
+Google Earth data belong to [Google](https://www.google.com/earth/studio/faq/) and is available for non-commercial research purposes only. For full information, please refer to their [TOS](https://earthengine.google.com/terms/). All data derived from Google is owned by Google, while other parts of the dataset from MegaDepth are subject to their original licensing terms.

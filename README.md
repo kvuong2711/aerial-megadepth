@@ -64,13 +64,13 @@ There are two options for downloading DUSt3R and MASt3R checkpoint finetuned on 
 
 1. You can use our huggingface_hub integration: the models ([aerial-dust3r](https://huggingface.co/kvuong2711/checkpoint-aerial-dust3r) or [aerial-mast3r](https://huggingface.co/kvuong2711/checkpoint-aerial-mast3r)) will be downloaded automatically.
 
-2. Or, download the checkpoints manually:
+2. Or, download the checkpoints manually (using [gdown](https://github.com/wkentaro/gdown), install using `pip install gdown`):
 
 ```bash
 # you are inside aerial-megadepth/mast3r
 mkdir -p checkpoints/
-wget https://aerial-megadepth.s3.us-east-2.amazonaws.com/cvpr2025_checkpoints/checkpoint-aerial-dust3r.pth -P checkpoints/
-wget https://aerial-megadepth.s3.us-east-2.amazonaws.com/cvpr2025_checkpoints/checkpoint-aerial-mast3r.pth -P checkpoints/
+gdown --fuzzy "https://drive.google.com/open?id=1wSGpYwWeGn99J8dVWNkfefwmWMAH7LFT" -O checkpoints/  # checkpoint-aerial-dust3r.pth
+gdown --fuzzy "https://drive.google.com/open?id=1LrRNUQRQZcVzcioyYHYYx9ImypSZpUq2" -O checkpoints/  # checkpoint-aerial-mast3r.pth
 ```
 
 ### Inference/Demo
