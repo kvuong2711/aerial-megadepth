@@ -25,6 +25,13 @@ ${{\color{RoyalBlue}\Huge{\textsf{  CVPR\ 2025\ \}}}}\$
 - [Citation](#citation)
 - [Issues](#issues)
 
+## 📋 Before You Start...
+Depending on what you're interested in:
+
+- 🚀 **If you want to download pretrained checkpoints and run the demo**: you can continue reading below.
+
+- 🛠️ **If you want to access or generate the dataset yourself**: please refer to [data_generation](data_generation) for full instructions.
+
 ## Installation
 
 Below are the setup instructions (mostly following [MASt3R repo](https://github.com/naver/mast3r)). We follow the MASt3R setup since it encapsulates DUSt3R, but both should work similarly.
