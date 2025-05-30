@@ -4,8 +4,6 @@
 
 [Khiem Vuong](https://www.khiemvuong.com/), [Anurag Ghosh](https://anuragxel.github.io/), [Deva Ramanan*](https://www.cs.cmu.edu/~deva), [Srinivasa Narasimhan*](https://www.cs.cmu.edu/~srinivas), [Shubham Tulsiani*](https://shubhtuls.github.io/)
 
-(* denotes equal contribution/advising)
-
 **CVPR 2025**
 
 [[`arXiv`](https://arxiv.org/abs/2504.13157)]
