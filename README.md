@@ -6,12 +6,12 @@
 
 (* denotes equal contribution/advising)
 
+**CVPR 2025**
+
 [[`arXiv`](https://arxiv.org/abs/2504.13157)]
 [[`Project Page`](https://aerial-megadepth.github.io/)]
 [[`3D Web Viewer`](https://aerial-megadepth.github.io/web-viewer/)]
 [[`Bibtex`](#citation)]
-
-${{\color{RoyalBlue}\Huge{\textsf{  CVPR\ 2025\ \}}}}\$
 
 </div>
 
