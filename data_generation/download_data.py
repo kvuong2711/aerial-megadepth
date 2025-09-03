@@ -32,7 +32,7 @@ def parse_download_links(links_file: str = None, gdrive_link: str = None) -> lis
         
     return urls
 
-def download_and_extract_data(output_path: str, urls: list[str], unzip: bool = True, remove_zip: bool = True):
+def download_and_extract_data(output_path: str, urls: list[str], unzip: bool = False, remove_zip: bool = False, create_subdirs: bool = False):
     """Downloads and extracts data from Google Drive links.
     
     Args:
@@ -40,6 +40,7 @@ def download_and_extract_data(output_path: str, urls: list[str], unzip: bool = T
         urls: List of Google Drive links to download
         unzip: Whether to unzip the downloaded file
         remove_zip: Whether to remove the zip file after extraction
+        create_subdirs: Whether to create subdirectories based on zip file names
     """
     # Create output directory if it doesn't exist
     os.makedirs(output_path, exist_ok=True)
@@ -52,14 +53,24 @@ def download_and_extract_data(output_path: str, urls: list[str], unzip: bool = T
         # Download file
         print(f'>>>>> Downloading {url} to {output_path}')
         output = gdown.download(url=url, output=output_path, fuzzy=True, quiet=False)
+        # output = output_path
         print(f'Downloaded to {output}')
         
         # Unzip the downloaded file
         if unzip:
             print(f'Unzipping file...')
+            if create_subdirs:
+                # Create a subdirectory based on the zip file name (without extension)
+                zip_name = os.path.splitext(os.path.basename(output))[0]
+                extract_path = os.path.join(output_path, zip_name)
+                os.makedirs(extract_path, exist_ok=True)
+            else:
+                # Extract directly to output path
+                extract_path = output_path
+            
             with zipfile.ZipFile(output, 'r') as zip_ref:
-                zip_ref.extractall(output_path)
-            print(f'Unzipped to {output_path}')
+                zip_ref.extractall(extract_path)
+            print(f'Unzipped to {extract_path}')
         
         # Remove the zip file
         if remove_zip:
@@ -78,11 +89,14 @@ def main():
                         help='Single Google Drive link to download')
     
     parser.add_argument('--unzip', action='store_true',
-                        default=True,
+                        default=False,
                         help='Unzip the downloaded files')
     parser.add_argument('--remove_zip', action='store_true',
-                        default=True,
+                        default=False,
                         help='Remove the zip files after extraction')
+    parser.add_argument('--create_subdirs', action='store_true',
+                        default=False,
+                        help='Extract directly to output path without creating subdirectories')
     args = parser.parse_args()
 
     # Parse the links first
@@ -93,7 +107,8 @@ def main():
         args.output_path,
         urls,
         args.unzip,
-        args.remove_zip
+        args.remove_zip,
+        args.create_subdirs
     )
 
 if __name__ == '__main__':
