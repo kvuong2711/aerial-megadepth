@@ -19,15 +19,15 @@ We provide data and pipeline for generating our AerialMegaDepth dataset using Go
 
 
 ## 💡 Before you start...
-> For the following commands, `/mnt/slarge2/` is our local directory path where we store the data. You should replace it with the appropriate path on your machine.
+For the following commands, `/mnt/slarge2/` is our local directory path where we store the data. You should replace it with the appropriate path on your machine.
 
-> If you run into issues preparing the dataset or are working on a research project that could benefit from our training data (particularly for academic use), feel free to reach out to me via [email](mailto:kvuong@andrew.cmu.edu). I'll do my best to help!
+If you run into issues preparing the dataset or are working on a research project that could benefit from our training data (particularly for academic use), feel free to reach out to me via [email](mailto:kvuong@andrew.cmu.edu). I'll do my best to help!
 
 
 ## 🗂️ Full Dataset Download
 <!-- If you are interested in accessing the full dataset, please fill out this [Access Request Form](https://forms.gle/FrrverRecTFEwZKP9) and we will get back to you as soon as possible. Please note that the data is only available for non-commercial research purposes and strictly follows the [license](#license). -->
 
-> The data is only available for **non-commercial research purposes and strictly follows the [license](#license).**
+⚠️ **IMPORTANT**: The data is only available for **non-commercial research purposes and strictly follows the [license](#license).**
 
 We are hosting the data on HuggingFace (https://huggingface.co/datasets/kvuong2711/aerialmegadepth), please submit the access request on HuggingFace. After being approved, you can install `huggingface_hub` and login using your HF's token:
 
