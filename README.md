@@ -13,7 +13,8 @@
 
 </div>
 
-📢 **NEWS (Sep 5, 2025): We have moved the full dataset to HuggingFace to make it easier to download. Please refer to [data_generation](data_generation) for full instructions.**
+## 📢 News
+- (Sep 5, 2025): We have moved the full dataset to HuggingFace to make it easier to download. Please refer to [data_generation](data_generation) for full instructions.
 
 ## Table of Contents
 
