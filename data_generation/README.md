@@ -1,5 +1,8 @@
 # Aerial-MegaDepth Data Generation
 
+📢 **NEWS (Sep 5, 2025): We have moved the data to HuggingFace to make it easier to download!**
+
+
 We provide data and pipeline for generating our AerialMegaDepth dataset using Google Earth and MegaDepth. It includes a minimal example as well as instructions for generating your own data from scratch.
 
 ## Table of Contents
@@ -21,8 +24,33 @@ We provide data and pipeline for generating our AerialMegaDepth dataset using Go
 > If you run into issues preparing the dataset or are working on a research project that could benefit from our training data (particularly for academic use), feel free to reach out to me via [email](mailto:kvuong@andrew.cmu.edu). I'll do my best to help!
 
 
-## 🗂️ Full Dataset Request
-If you are interested in accessing the full dataset, please fill out this [Access Request Form](https://forms.gle/FrrverRecTFEwZKP9) and we will get back to you as soon as possible. Please note that the data is only available for non-commercial research purposes and strictly follows the [license](#license).
+## 🗂️ Full Dataset Download
+<!-- If you are interested in accessing the full dataset, please fill out this [Access Request Form](https://forms.gle/FrrverRecTFEwZKP9) and we will get back to you as soon as possible. Please note that the data is only available for non-commercial research purposes and strictly follows the [license](#license). -->
+
+> The data is only available for **non-commercial research purposes and strictly follows the [license](#license).**
+
+We are hosting the data on HuggingFace (https://huggingface.co/datasets/kvuong2711/aerialmegadepth), please submit the access request on HuggingFace. After being approved, you can install `huggingface_hub` and login using your HF's token:
+
+```bash
+pip install -U "huggingface_hub[cli]" 
+
+hf auth login  # enter your HuggingFace token
+```
+
+Then, download the data using the following command:
+
+```bash
+python download_data_hf.py --repo_id kvuong2711/aerialmegadepth --local_dir /mnt/slarge2/megadepth_aerial_data/data --allow_patterns "**.zip" --unzip --remove_zip
+```
+
+#### (Optional) ☀️🌙  Time-varying Google Earth images
+In addition to the standard data, we also provide Google Earth renderings at two alternative times of day (e.g., day/night). During training, these variants can be randomly used to improve robustness to lighting changes. While we have observed that the lighting model in Google Earth Studio is not photorealistic, as a form of data augmentation it may still offer slight improvements in scenarios with significant lighting variation.
+
+As above, we are hosting the data on HuggingFace (https://huggingface.co/datasets/kvuong2711/aerialmegadepth-tv), please submit the access request on HuggingFace. After approval, you can download this data:
+
+```bash
+python download_data_hf.py --repo_id kvuong2711/aerialmegadepth-tv --local_dir /mnt/slarge2/megadepth_aerial_timevarying_data/data --allow_patterns "**.zip" --unzip --remove_zip --create_subdirs
+```
 
 
 ## 📦 Sample Data
